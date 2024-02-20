@@ -16,6 +16,7 @@ public class ScientificCalculator extends JFrame implements ActionListener {
 
     private JTextField inputField;
     private double storedValue = 0;
+    private boolean radiansMode = false;
     private StringBuilder currentInput = new StringBuilder();
 
     public ScientificCalculator() {
@@ -38,7 +39,7 @@ public class ScientificCalculator extends JFrame implements ActionListener {
                 "x^y", "^2", "^3", "sqrt", "exp", "10^", "7", "8", "9", "*",
                 "1/", "2√", "3√", "y√", "ln", "log", "4", "5", "6", "-",
                 "!", "sin", "cos", "tan", "e", "EE", "1", "2", "3", "+",
-                "Rad", "sinh", "cosh", "tanh", "π", "RAND", "0", "del", "."
+                "Rad", "sinh", "cosh", "tanh", "π", "RAND", "0", "del", ".", "="
         };
 
         for (int i = 0; i < buttonLabels.length; i++) {
@@ -69,10 +70,13 @@ public class ScientificCalculator extends JFrame implements ActionListener {
         } else {
             switch (command) {
                 case "c":
-                    clearScreen();
+                    inputField.equals("");
                     break;
                 case "del":
                     handleDelete();
+                    break;
+                case "Rad":
+                    toggleRadiansMode();
                     break;
                 case "mc":
                     clearMemory();
@@ -101,16 +105,14 @@ public class ScientificCalculator extends JFrame implements ActionListener {
                 currentInput.setLength(0);
                 currentInput.append(result);
             } else {
-                inputField.setText("Error");
-                currentInput.setLength(0);
+//                inputField.setText("Error");
+//                currentInput.setLength(0);
             }
         } catch (Exception e) {
-            inputField.setText("Error");
-            currentInput.setLength(0);
+//            inputField.setText("Error");
+//            currentInput.setLength(0);
         }
     }
-
-    
 
     private double evaluate(String expression) {
         expression = expression.replaceAll("\\s+", ""); // remove all spaces from the expression
@@ -256,9 +258,6 @@ public class ScientificCalculator extends JFrame implements ActionListener {
         return result;
     }
 
-  
-    
-
     private void handleDelete() {
         if (currentInput.length() > 0) {
             currentInput.deleteCharAt(currentInput.length() - 1);
@@ -266,10 +265,8 @@ public class ScientificCalculator extends JFrame implements ActionListener {
         }
     }
 
-    private void clearScreen() {
-        inputField.setText("");
-        currentInput.setLength(0);
-        storedValue = 0;
+    private void toggleRadiansMode() {
+        radiansMode = !radiansMode;
     }
 
     private void clearMemory() {
@@ -291,7 +288,6 @@ public class ScientificCalculator extends JFrame implements ActionListener {
     }
 
     private void handleInput(String input) {
-        clearScreen(); // Clear screen when starting a new computation
         currentInput.append(input);
         inputField.setText(currentInput.toString());
     }
